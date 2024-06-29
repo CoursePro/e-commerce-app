@@ -1,0 +1,11 @@
+spring:
+  data:
+    mongodb:
+      username: lucky
+      password: 1234
+      host: localhost
+      port: 27017
+      database: customer
+
+server:
+  port: 8090
