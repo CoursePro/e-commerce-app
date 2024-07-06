@@ -28,7 +28,5 @@ public class OrderLine {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    private Integer orderId;
-
     private Integer productId;
 }
