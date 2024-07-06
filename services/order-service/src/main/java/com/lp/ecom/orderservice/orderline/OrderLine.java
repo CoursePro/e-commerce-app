@@ -29,4 +29,6 @@ public class OrderLine {
     private Order order;
 
     private Integer orderId;
+
+    private Integer productId;
 }
