@@ -2,6 +2,8 @@ package com.lp.ecom.orderservice.order;
 
 import com.lp.ecom.orderservice.customer.CustomerClient;
 import com.lp.ecom.orderservice.exception.BusinessException;
+import com.lp.ecom.orderservice.kafka.OrderConfirmation;
+import com.lp.ecom.orderservice.kafka.OrderProducer;
 import com.lp.ecom.orderservice.orderline.OrderLineRequest;
 import com.lp.ecom.orderservice.orderline.OrderLineService;
 import com.lp.ecom.orderservice.product.ProductClient;
@@ -27,13 +29,15 @@ public class OrderService {
 
     private final OrderLineService orderLineService;
 
+    private final OrderProducer orderProducer;
+
     public Integer createOrder(OrderRequest request) {
         // check the customer -->
         var customer = this.customerClient.findCustomerById(request.customerId())
                 .orElseThrow(() -> new BusinessException("Cannot create order:: No customer exist with the provided ID"));
 
         // purchase the product --> product-service ms (RestTemplate)
-        this.productClient.purchaseProducts(request.products());
+        var purchasedProducts = this.productClient.purchaseProducts(request.products());
 
         // persist order
         var order = this.repository.save(mapper.toOrder(request));
@@ -53,6 +57,16 @@ public class OrderService {
         // start payment process todo
 
         // send the order confirmation --> notification-service ms (kafka)
-        return null;
+        orderProducer.sendOrderConfirmation(
+                new OrderConfirmation(
+                        request.reference(),
+                        request.amount(),
+                        request.paymentMethod(),
+                        customer,
+                        purchasedProducts
+                )
+        );
+
+        return order.getId();
     }
 }
