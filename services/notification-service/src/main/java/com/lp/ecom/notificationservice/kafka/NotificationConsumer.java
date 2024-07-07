@@ -5,7 +5,6 @@ import com.lp.ecom.notificationservice.kafka.order.OrderConfirmation;
 import com.lp.ecom.notificationservice.kafka.payment.PaymentConfirmation;
 import com.lp.ecom.notificationservice.notification.Notification;
 import com.lp.ecom.notificationservice.notification.NotificationRepository;
-import com.lp.ecom.notificationservice.notification.NotificationType;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

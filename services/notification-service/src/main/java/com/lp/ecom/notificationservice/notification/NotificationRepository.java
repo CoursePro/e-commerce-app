@@ -1,6 +1,5 @@
 package com.lp.ecom.notificationservice.notification;
 
-import com.lp.ecom.notificationservice.kafka.payment.PaymentConfirmation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**
