@@ -6,6 +6,8 @@ import com.lp.ecom.orderservice.kafka.OrderConfirmation;
 import com.lp.ecom.orderservice.kafka.OrderProducer;
 import com.lp.ecom.orderservice.orderline.OrderLineRequest;
 import com.lp.ecom.orderservice.orderline.OrderLineService;
+import com.lp.ecom.orderservice.payment.PaymentClient;
+import com.lp.ecom.orderservice.payment.PaymentRequest;
 import com.lp.ecom.orderservice.product.ProductClient;
 import com.lp.ecom.orderservice.product.PurchaseRequest;
 import jakarta.persistence.EntityNotFoundException;
@@ -35,7 +37,10 @@ public class OrderService {
 
     private final OrderProducer orderProducer;
 
+    private final PaymentClient paymentClient;
+
     public Integer createOrder(OrderRequest request) {
+
         // check the customer -->
         var customer = this.customerClient.findCustomerById(request.customerId())
                 .orElseThrow(() -> new BusinessException("Cannot create order:: No customer exist with the provided ID"));
@@ -58,7 +63,15 @@ public class OrderService {
             );
         }
 
-        // start payment process todo
+        // start payment process
+        var paymentRequest = new PaymentRequest(
+                request.amount(),
+                request.paymentMethod(),
+                order.getId(),
+                order.getReference(),
+                customer
+        );
+        paymentClient.requestOrderPayment(paymentRequest);
 
         // send the order confirmation --> notification-service ms (kafka)
         orderProducer.sendOrderConfirmation(
