@@ -6,7 +6,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: create # because we want to rely on fly-weight to create schema for us
+      ddl-auto: update # use validate -> because we want to rely on fly-weight to create schema for us
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   kafka:
@@ -15,7 +15,7 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties:
-        spring.json.type.mapping: orderConfirmation:com.lp.ecom.orderservice.OrderConfirmation #producer needs to inform the consumer of the topic that what is the object that are sending: where this coming from
+        spring.json.type.mapping: orderConfirmation:com.lp.ecom.orderservice.kafka.OrderConfirmation #producer needs to inform the consumer of the topic that what is the object that are sending: where this coming from
 
 
 server:

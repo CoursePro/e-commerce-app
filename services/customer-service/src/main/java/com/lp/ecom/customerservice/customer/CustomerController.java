@@ -12,7 +12,7 @@ import java.util.List;
  * @since: 2024-06-29
  */
 @RestController
-@RequestMapping("/api/v1/customer")
+@RequestMapping("/api/v1/customers")
 @RequiredArgsConstructor
 public class CustomerController {
 
