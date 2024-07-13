@@ -87,6 +87,14 @@ services:
       - 1080:1080
       - 1025:1025
 
+  zipkin:
+    container_name: zipkin
+    image: openzipkin/zipkin
+    ports:
+      - 9411:9411 # we use our cae : container port
+    networks:
+      - microservices-net
+
 networks:
   microservices-net:
     driver: bridge
