@@ -1,12 +1,16 @@
+#spring:
+#  data:
+#    mongodb:
+#      username: lucky
+#      password: 1234
+#      host: localhost
+#      port: 27017
+#      database: notification
+#      authentication-database: admin
 spring:
   data:
     mongodb:
-      username: lucky
-      password: 1234
-      host: localhost
-      port: 27017
-      database: customer
-      authentication-database: admin
+      uri: mongodb://lucky:1234@localhost:27017/notification?authSource=admin
   kafka:
     consumer:
       bootstrap-servers: localhost:9092
